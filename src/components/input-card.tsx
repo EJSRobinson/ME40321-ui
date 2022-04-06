@@ -4,14 +4,18 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type Props = {
   propName: string;
   propType: string;
   units: string;
+  remover: (value: string) => void;
 };
 
-const InputCard: React.FC<Props> = ({ propName, propType, units }) => {
+const InputCard: React.FC<Props> = ({ propName, propType, units, remover }) => {
   return (
     <Box
       sx={{
@@ -23,7 +27,19 @@ const InputCard: React.FC<Props> = ({ propName, propType, units }) => {
         width: 275,
       }}
     >
-      <Box sx={{ color: 'text.primary', fontWeight: 600 }}>{propName}</Box>
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ color: 'text.primary', fontWeight: 600, width: 205, mt: 1 }}>{propName}</Box>
+        <IconButton
+          aria-label='delete'
+          sx={{ mr: 1 }}
+          onClick={() => {
+            remover(propName);
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+
       {(propType === 'quant' || propType === 'range') && (
         <>
           <TextField

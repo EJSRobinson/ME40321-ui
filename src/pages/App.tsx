@@ -8,6 +8,12 @@ const constraints: Array<string> = [];
 
 const addConstraint = (propName: string) => {
   constraints.push(propName);
+  console.log(constraints);
+};
+
+const removeConstraint = (propName: string) => {
+  constraints.splice(constraints.indexOf(propName), 1);
+  console.log(constraints);
 };
 
 function App() {
@@ -26,13 +32,23 @@ function App() {
 
   return (
     <>
-      <InputCard propName={'Static Stability Margin'} propType={'quant'} units={'kg'} />
-      <InputCard propName={'Material'} propType={'list'} units={'kg'} />
-      <InputCard propName={'Reference Area'} propType={'qual'} units={'m²'} />
+      <InputCard
+        propName={'Static Stability Margin'}
+        propType={'quant'}
+        units={'kg'}
+        remover={removeConstraint}
+      />
       <OutputCard propName={'Lift Force'} propType={'quant'} units={'N'} quantValue={testValue} />
       <OutputCard propName={'Material'} propType={'quant'} units={'None'} qualValue={testValue2} />
       {constraints?.map((constraint) => {
-        return <InputCard propName={constraint} propType={'quant'} units={'kg'} />;
+        return (
+          <InputCard
+            propName={constraint}
+            propType={'quant'}
+            units={'kg'}
+            remover={removeConstraint}
+          />
+        );
       })}
       <Button
         variant='outlined'
