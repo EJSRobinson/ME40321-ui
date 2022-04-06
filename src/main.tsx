@@ -1,10 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
-import App from './pages/App'
+import App from './pages/App';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,4 +14,4 @@ ReactDOM.render(
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
-)
+);

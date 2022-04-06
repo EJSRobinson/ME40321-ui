@@ -23,10 +23,11 @@ const InputCard: React.FC<Props> = ({ propName, propType, units }) => {
         boxShadow: 1,
         borderRadius: 1,
         p: 1,
-        width: 280,
+        m: 1,
+        width: 275,
       }}
     >
-      <Box sx={{ color: 'text.primary' }}>{propName}</Box>
+      <Box sx={{ color: 'text.primary', fontWeight: 600 }}>{propName}</Box>
       {(propType === 'quant' || propType === 'range') && (
         <>
           <TextField
@@ -65,9 +66,24 @@ const InputCard: React.FC<Props> = ({ propName, propType, units }) => {
           </FormControl>
         </>
       )}
+      {propType === 'qual' && (
+        <>
+          <TextField
+            id='val'
+            label='Value'
+            variant='standard'
+            type='number'
+            sx={{
+              color: 'text.primary',
+              width: 208,
+              mr: 1,
+            }}
+          />
+        </>
+      )}
       <Box
         sx={{
-          color: 'text.primary',
+          color: 'text.secondary',
           mt: 3,
           display: 'inline-flex',
         }}
