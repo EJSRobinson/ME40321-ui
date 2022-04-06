@@ -8,8 +8,8 @@ function App() {
 
   return (
     <>
-      <Elliot dog={12} cat={'Brian'} />
-      <InputCard propName={'Static Stability Margin'} propType={'quant'} />
+      <InputCard propName={'Static Stability Margin'} propType={'quant'} units={'kg'} />
+      <InputCard propName={'Material'} propType={'list'} units={'kg'} />
     </>
   );
 }
