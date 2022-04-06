@@ -5,33 +5,29 @@ import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import { SettingsOutlined } from '@mui/icons-material';
 
 export interface SimpleDialogProps {
   open: boolean;
-  onClose: (value: void) => void;
+  openFlagSetter: (value: boolean) => void;
+  onClose: (value: string) => void;
 }
 
-function AddDialog(props: SimpleDialogProps) {
+const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
   const [group, setGroup] = useState('');
   const [prop, setProp] = useState('');
-  const { onClose, open } = props;
+  const { onClose, open, openFlagSetter } = props;
 
   const handleClose = () => {
+    onClose(prop);
+    openFlagSetter(false);
     setGroup('');
     setProp('');
-    onClose();
   };
-
-  // const handleListItemClick = (value: string) => {
-  //   onClose(value);
-  // };
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -93,28 +89,6 @@ function AddDialog(props: SimpleDialogProps) {
       </DialogActions>
     </Dialog>
   );
-}
-
-const addConstraint: React.FC = () => {
-  const [openFlag, setOpenFlag] = useState(false);
-  const [selectedProp, setselectedProp] = useState('');
-
-  const handleOpen = () => {
-    setOpenFlag(true);
-  };
-
-  const handleClose = () => {
-    setOpenFlag(false);
-  };
-
-  return (
-    <>
-      <Button variant='outlined' onClick={handleOpen}>
-        Add new constraint
-      </Button>
-      <AddDialog open={openFlag} onClose={handleClose} />
-    </>
-  );
 };
 
-export default addConstraint;
+export default addConstraintDialog;

@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import InputCard from '../components/input-card';
 import OutputCard from '../components/output-card';
-import AddConstraint from '../components/add-constraint-button';
+import AddConstraintDialog from '../components/add-constraint-dialog';
+import Button from '@mui/material/Button';
+
+const constraints: Array<string> = [];
+
+const addConstraint = (propName: string) => {
+  constraints.push(propName);
+};
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [addConstOpenFlag, setAddConstOpenFlag] = useState(false);
 
   const testValue = {
     typeName: 'quant',
@@ -24,7 +31,22 @@ function App() {
       <InputCard propName={'Reference Area'} propType={'qual'} units={'m²'} />
       <OutputCard propName={'Lift Force'} propType={'quant'} units={'N'} quantValue={testValue} />
       <OutputCard propName={'Material'} propType={'quant'} units={'None'} qualValue={testValue2} />
-      <AddConstraint />
+      {constraints?.map((constraint) => {
+        return <InputCard propName={constraint} propType={'quant'} units={'kg'} />;
+      })}
+      <Button
+        variant='outlined'
+        onClick={() => {
+          setAddConstOpenFlag(true);
+        }}
+      >
+        Add new constraint
+      </Button>
+      <AddConstraintDialog
+        open={addConstOpenFlag}
+        onClose={addConstraint}
+        openFlagSetter={setAddConstOpenFlag}
+      />
     </>
   );
 }
