@@ -29,65 +29,23 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import logo from '../logo-square.png';
+import logo from '../logo-main.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    background: {
-      default: '#eee',
-      paper: '#fff',
-    },
-    text: {
-      primary: '#22303d',
-      secondary: '#848a91',
-    },
-    primary: {
-      main: '#9e7470',
-    },
-    secondary: {
-      main: '#eee',
-    },
-    warning: {
-      light: '#ecdf62',
-      main: '#ecd718',
-    },
-  },
-
-  components: {
-    MuiChip: {
-      styleOverrides: {
-        colorPrimary: {
-          color: '#eee',
-          borderColor: '#eee',
-        },
-      },
-    },
-  },
-});
 
 const MainAppBar: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
-    <AppBar position='sticky'>
-      <ThemeProvider theme={theme}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant='h6' component='div' sx={{ ml: 0, color: '#eee' }}>
-            ME40321
-          </Typography>
-          <Box sx={{ mt: 1 }}>
-            <img src={logo} alt='' height='35' />
-          </Box>
-        </Toolbar>
-      </ThemeProvider>
+    <AppBar position='sticky' sx={{ bgcolor: '#eaaeae' }}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Box sx={{ mt: 1 }}>
+          <img src={logo} alt='' height='60' />
+        </Box>
+        <Typography variant='h6' component='div' sx={{ ml: 0, color: '#111' }}>
+          ME40321
+        </Typography>
+      </Toolbar>
     </AppBar>
   );
 };
