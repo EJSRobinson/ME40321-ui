@@ -4,6 +4,7 @@ import OutputCard from '../components/output-card';
 import AddConstraintDialog from '../components/add-constraint-dialog';
 import Button from '@mui/material/Button';
 import InputColumn from '../components/input-column';
+import MainAppBar from '../components/MainAppBar';
 
 function App() {
   const testValue = {
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <>
+      <MainAppBar />
       <OutputCard propName={'Lift Force'} propType={'quant'} units={'N'} quantValue={testValue} />
       <OutputCard propName={'Material'} propType={'quant'} units={'None'} qualValue={testValue2} />
       <InputColumn />
