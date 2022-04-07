@@ -17,21 +17,18 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
-const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
-  const [group, setGroup] = useState('');
+const AddContextDialog: React.FC<SimpleDialogProps> = (props) => {
   const [prop, setProp] = useState('');
   const { onClose, open, openFlagSetter } = props;
 
   const handleCancel = () => {
     openFlagSetter(false);
-    setGroup('');
     setProp('');
   };
 
   const handleConfirm = () => {
     onClose(prop);
     openFlagSetter(false);
-    setGroup('');
     setProp('');
   };
 
@@ -47,30 +44,13 @@ const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
               id='group-select'
               label='Choose Option'
               defaultValue={''}
-              onChange={(event) => setGroup(event.target.value)}
+              onChange={(event) => setProp(event.target.value)}
             >
-              <MenuItem value={'Group0'}>Group 0</MenuItem>
-              <MenuItem value={'Group1'}>Group 1</MenuItem>
+              <MenuItem value={'Pop1'}>Cont 1</MenuItem>
+              <MenuItem value={'wefwef'}>Cont 2</MenuItem>
             </Select>
           </FormControl>
         </Box>
-        {group !== '' && (
-          <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <FormControl variant='standard' sx={{ width: 208, mr: 1 }}>
-              <InputLabel id='prop-select-label'>Select Constraint</InputLabel>
-              <Select
-                labelId='prop-select-label'
-                id='prop-select'
-                label='Choose Option'
-                defaultValue={''}
-                onChange={(event) => setProp(event.target.value)}
-              >
-                <MenuItem value={'Kn'}>Kn</MenuItem>
-                <MenuItem value={'M'}>Mach Number</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        )}
       </DialogContent>
       <DialogActions>
         <Button
@@ -98,4 +78,4 @@ const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
   );
 };
 
-export default addConstraintDialog;
+export default AddContextDialog;
