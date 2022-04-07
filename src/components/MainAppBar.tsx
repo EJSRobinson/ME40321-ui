@@ -29,7 +29,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import logo from '../logo-main.png';
+import logo from '../logo-2.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const MainAppBar: React.FC = () => {

@@ -48,7 +48,7 @@ function Fin() {
   return (
     <group position={[-S / 2, -cr / 2, 0]}>
       <mesh ref={ref} geometry={geometry}>
-        <meshStandardMaterial color={'#90322a'} />
+        <meshStandardMaterial color={'#90322a'} metalness={2} roughness={2} />
       </mesh>
     </group>
   );
