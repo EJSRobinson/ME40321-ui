@@ -43,7 +43,7 @@ type Props = {
   qualValue?: qualVal;
 };
 
-const InputCard: React.FC<Props> = ({
+const OuputCard: React.FC<Props> = ({
   propName,
   units,
   quantValue,
@@ -93,4 +93,4 @@ const InputCard: React.FC<Props> = ({
   );
 };
 
-export default InputCard;
+export default OuputCard;
