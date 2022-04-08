@@ -55,10 +55,13 @@ const OuputCard: React.FC<Props> = ({
     <Box
       sx={{
         bgcolor: 'background.paper',
+        border: 1,
+        borderColor: '#BBB',
         boxShadow: 1,
         borderRadius: 1,
         p: 1,
-        m: 1,
+        mb: 1,
+        ml: -1,
         width: 275,
       }}
     >

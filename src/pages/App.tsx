@@ -23,17 +23,46 @@ function App() {
       <div style={{ width: '100%' }}>
         <Box sx={{ display: 'flex', borderRadius: 1, mt: 1 }}>
           <Box sx={{ width: 290 }}>
-            Constraints and Context{<InputColumn setFinished={setFinished} />}
+            <Box
+              sx={{
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+            >
+              Constraints and Context
+            </Box>
+            {<InputColumn setFinished={setFinished} />}
           </Box>
           <Box sx={{ width: '90%', flexShrink: 1, height: '100vh', mt: 0 }}>
-            Design Viewer
+            <Box
+              sx={{
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+            >
+              Design Viewer
+            </Box>
             {
               <Box sx={{ width: '100%', height: '100vh', mt: -15 }}>
                 <MiddleColumn />
               </Box>
             }
           </Box>
-          <Box sx={{ width: 290 }}>Results {<OutputColumn finished={finished} />}</Box>
+          <Box sx={{ width: 300 }}>
+            {' '}
+            <Box
+              sx={{
+                textAlign: 'center',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+            >
+              Results
+            </Box>{' '}
+            {<OutputColumn finished={finished} />}
+          </Box>
         </Box>
       </div>
     </>

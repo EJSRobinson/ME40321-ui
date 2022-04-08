@@ -108,7 +108,7 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
       <Button
         variant='outlined'
         endIcon={<SendIcon />}
-        sx={{ fontSize: 12, p: 1, m: 1, width: 275 }}
+        sx={{ fontSize: 12, p: 1, ml: 2, mt: -1, width: 258 }}
         onClick={async () => {
           const result = (await finish(null)) as any;
           if (result.data.status === 'Ok') {
