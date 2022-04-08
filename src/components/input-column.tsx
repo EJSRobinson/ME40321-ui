@@ -3,10 +3,19 @@ import InputCard from '../components/input-card';
 import AddConstraintDialog from '../components/add-constraint-dialog';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import SendIcon from '@mui/icons-material/Send';
 import Box from '@mui/material/Box';
 import AddContextDialog from './add-constext-dialog';
 
-function inputColumn() {
+import { useCheckReadyToFinishQuery, useFinishMutation } from '../api-client';
+
+type Props = {
+  setFinished: Function;
+};
+
+const inputColumn: React.FC<Props> = ({ setFinished }) => {
+  const [finish] = useFinishMutation();
+
   const [addConstOpenFlag, setAddConstOpenFlag] = useState(false);
   const [constraints, setConstraintsInList] = useState<Array<string>>([]);
 
@@ -96,6 +105,21 @@ function inputColumn() {
           Context
         </Button>
       </Box>
+      <Button
+        variant='outlined'
+        endIcon={<SendIcon />}
+        sx={{ fontSize: 12, p: 1, m: 1, width: 275 }}
+        onClick={async () => {
+          const result = (await finish(null)) as any;
+          if (result.data.status === 'Ok') {
+            setFinished(true);
+          } else {
+            setFinished(false);
+          }
+        }}
+      >
+        Finish
+      </Button>
       <AddConstraintDialog
         open={addConstOpenFlag}
         onClose={addConstraint}
@@ -108,6 +132,6 @@ function inputColumn() {
       />
     </>
   );
-}
+};
 
 export default inputColumn;
