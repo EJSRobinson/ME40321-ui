@@ -78,7 +78,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     <Box sx={{ mr: 1 }}>
       {groups?.map((group) => {
         return (
-          <Accordion>
+          <Accordion key={`${Math.random()}`}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
@@ -91,7 +91,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
                 if (result.group === group) {
                   return (
                     <OutputCard
-                      key={result.name}
+                      key={`${Math.random()}`}
                       propName={result.name}
                       propType={result.value.typeName}
                       units={result.units.displayUnits}

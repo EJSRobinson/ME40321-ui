@@ -12,10 +12,11 @@ type Props = {
   propName: string;
   propType: string;
   units: string;
+  options: string[];
   remover: (value: string) => void;
 };
 
-const InputCard: React.FC<Props> = ({ propName, propType, units, remover }) => {
+const InputCard: React.FC<Props> = ({ propName, propType, units, options, remover }) => {
   return (
     <Box
       sx={{
@@ -71,9 +72,9 @@ const InputCard: React.FC<Props> = ({ propName, propType, units, remover }) => {
           <FormControl variant='standard' sx={{ width: 208, mr: 1 }}>
             <InputLabel id='select-label'>Selection</InputLabel>
             <Select labelId='select-label' id='list-select' label='Choose Option'>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {options?.map((option) => {
+                return <MenuItem value={option}>{option}</MenuItem>;
+              })}
             </Select>
           </FormControl>
         </>

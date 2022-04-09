@@ -11,28 +11,32 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
+import { property } from './input-column';
+
 export interface SimpleDialogProps {
   open: boolean;
+  allProperties: property[];
+  allGroups: string[];
   openFlagSetter: (value: boolean) => void;
-  onClose: (value: string) => void;
+  onClose: (value: property) => void;
 }
 
 const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
   const [group, setGroup] = useState('');
-  const [prop, setProp] = useState('');
-  const { onClose, open, openFlagSetter } = props;
+  const [prop, setProp] = useState<any>({});
+  const { onClose, open, openFlagSetter, allProperties, allGroups } = props;
 
   const handleCancel = () => {
     openFlagSetter(false);
     setGroup('');
-    setProp('');
+    setProp({});
   };
 
   const handleConfirm = () => {
     onClose(prop);
     openFlagSetter(false);
     setGroup('');
-    setProp('');
+    setProp({});
   };
 
   return (
@@ -49,8 +53,15 @@ const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
               defaultValue={''}
               onChange={(event) => setGroup(event.target.value)}
             >
-              <MenuItem value={'Group0'}>Group 0</MenuItem>
-              <MenuItem value={'Group1'}>Group 1</MenuItem>
+              {allGroups?.map((groupName) => {
+                if (groupName !== 'Context') {
+                  return (
+                    <MenuItem key={`${Math.random()}`} value={groupName}>
+                      {groupName}
+                    </MenuItem>
+                  );
+                }
+              })}
             </Select>
           </FormControl>
         </Box>
@@ -65,8 +76,15 @@ const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
                 defaultValue={''}
                 onChange={(event) => setProp(event.target.value)}
               >
-                <MenuItem value={'Kn'}>Kn</MenuItem>
-                <MenuItem value={'M'}>Mach Number</MenuItem>
+                {allProperties?.map((property) => {
+                  if (group === property.group) {
+                    return (
+                      <MenuItem key={`${Math.random()}`} value={property}>
+                        {property.name}
+                      </MenuItem>
+                    );
+                  }
+                })}
               </Select>
             </FormControl>
           </Box>

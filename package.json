@@ -14,15 +14,16 @@
     "@mui/lab": "^5.0.0-alpha.71",
     "@mui/material": "^5.4.4",
     "@mui/x-data-grid": "^5.5.1",
+    "@react-three/drei": "7.19.6",
+    "@react-three/fiber": "8.0.4",
     "@reduxjs/toolkit": "^1.8.0",
+    "@types/three": "0.139.0",
+    "me40321-database": "^0.0.30",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "6",
-    "three": "^0.139.2",
-    "@react-three/fiber": "8.0.4",
-    "@react-three/drei": "7.19.6",
-    "@types/three": "0.139.0"
+    "three": "^0.139.2"
   },
   "devDependencies": {
     "@ia/eslint-config-ia": "^1.0.3",
