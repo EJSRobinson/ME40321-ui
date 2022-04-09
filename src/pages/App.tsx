@@ -13,9 +13,9 @@ function App() {
   const [finished, setFinishedFlag] = useState(false);
   function setFinished(result: boolean) {
     setFinishedFlag(result);
-    setTimeout(() => {
-      setFinishedFlag(false);
-    }, 5000);
+    // setTimeout(() => {
+    //   setFinishedFlag(false);
+    // }, 5000);
   }
   return (
     <>
@@ -45,8 +45,8 @@ function App() {
               Design Viewer
             </Box>
             {
-              <Box sx={{ width: '100%', height: '100vh', mt: -15 }}>
-                <MiddleColumn />
+              <Box sx={{ width: '100%', height: '100vh', mt: -30 }}>
+                <MiddleColumn finished={finished} />
               </Box>
             }
           </Box>
