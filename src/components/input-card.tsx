@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
 
 type Props = {
   propName: string;
@@ -14,9 +15,23 @@ type Props = {
   units: string;
   options: string[];
   remover: (value: string) => void;
+  valueSetter: (propName: string, limit: string, value: string | number) => void;
+  currentValue: {
+    max?: number | null;
+    min?: number | null;
+    val?: number | string | null;
+  };
 };
 
-const InputCard: React.FC<Props> = ({ propName, propType, units, options, remover }) => {
+const InputCard: React.FC<Props> = ({
+  propName,
+  propType,
+  units,
+  options,
+  remover,
+  valueSetter,
+  currentValue,
+}) => {
   return (
     <Box
       sx={{
@@ -54,6 +69,10 @@ const InputCard: React.FC<Props> = ({ propName, propType, units, options, remove
               width: 100,
               mr: 1,
             }}
+            value={currentValue.max}
+            onChange={(e) => {
+              valueSetter(propName, 'max', e.target.value);
+            }}
           />
           <TextField
             id='min'
@@ -65,6 +84,10 @@ const InputCard: React.FC<Props> = ({ propName, propType, units, options, remove
               width: 100,
               mr: 1,
             }}
+            value={currentValue.min}
+            onChange={(e) => {
+              valueSetter(propName, 'min', e.target.value);
+            }}
           />
         </>
       )}
@@ -72,7 +95,15 @@ const InputCard: React.FC<Props> = ({ propName, propType, units, options, remove
         <>
           <FormControl variant='standard' sx={{ width: 208, mr: 1 }}>
             <InputLabel id='select-label'>Selection</InputLabel>
-            <Select labelId='select-label' id='list-select' label='Choose Option'>
+            <Select
+              labelId='select-label'
+              id='list-select'
+              label='Choose Option'
+              value={currentValue.val}
+              onChange={(e) => {
+                valueSetter(propName, 'val', e.target.value);
+              }}
+            >
               {options?.map((option) => {
                 return <MenuItem value={option}>{option}</MenuItem>;
               })}
@@ -91,6 +122,10 @@ const InputCard: React.FC<Props> = ({ propName, propType, units, options, remove
               color: 'text.primary',
               width: 208,
               mr: 1,
+            }}
+            value={currentValue.val}
+            onChange={(e) => {
+              valueSetter(propName, 'val', e.target.value);
             }}
           />
         </>

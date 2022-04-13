@@ -51,6 +51,7 @@ const AddContextDialog: React.FC<SimpleDialogProps> = (props) => {
             >
               {allProperties?.map((property) => {
                 if (property.group === 'Context') {
+                  property.value = { max: null, min: null, val: null };
                   return (
                     <MenuItem key={`${Math.random()}`} value={property}>
                       {property.name}

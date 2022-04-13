@@ -77,7 +77,7 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
           disabled={selection === ''}
           autoFocus
         >
-          Confirm
+          Export
         </Button>
       </DialogActions>
     </Dialog>

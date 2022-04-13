@@ -1,3 +1,4 @@
+import { GridBody } from '@mui/x-data-grid';
 import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
 export const uiApiClient = createApi({
@@ -31,8 +32,27 @@ export const uiApiClient = createApi({
         method: 'POST',
       }),
     }),
+    setConstraints: builder.mutation<string, any>({
+      query: (body) => ({
+        url: `addConstraintSet`,
+        method: 'POST',
+        body: body,
+      }),
+    }),
+    setContext: builder.mutation<string, any>({
+      query: (body) => ({
+        url: `addContextSet`,
+        method: 'POST',
+        body: body,
+      }),
+    }),
   }),
 });
 
-export const { useCheckReadyToFinishQuery, useFinishMutation, useGetFinishedResultQuery } =
-  uiApiClient;
+export const {
+  useCheckReadyToFinishQuery,
+  useFinishMutation,
+  useGetFinishedResultQuery,
+  useSetConstraintsMutation,
+  useSetContextMutation,
+} = uiApiClient;

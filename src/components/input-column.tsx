@@ -16,7 +16,12 @@ import { Provider } from 'react-redux';
 import { store } from '../store';
 import { getAll } from 'me40321-database';
 
-import { useCheckReadyToFinishQuery, useFinishMutation } from '../api-client';
+import {
+  useCheckReadyToFinishQuery,
+  useFinishMutation,
+  useSetConstraintsMutation,
+  useSetContextMutation,
+} from '../api-client';
 
 type Props = {
   setFinished: Function;
@@ -28,11 +33,13 @@ export type property = {
   type: string;
   unit: string;
   options: string[];
+  value?: any;
 };
 
 let rawProperties: any = {};
 const allProperties: property[] = [];
 const allGroups: string[] = [];
+const namesMap = new Map<string, string>();
 
 function sortProps() {
   for (const [key, value] of rawProperties.entries()) {
@@ -52,6 +59,7 @@ function sortProps() {
     if (!allGroups.includes(value.group)) {
       allGroups.push(value.group);
     }
+    namesMap.set(value.name, value.shortName);
   }
 }
 (async () => {
@@ -61,17 +69,107 @@ function sortProps() {
 
 const inputColumn: React.FC<Props> = ({ setFinished }) => {
   const [finish] = useFinishMutation();
+  const [sendConstraintsSet] = useSetConstraintsMutation();
+  const [sendContextSet] = useSetContextMutation();
 
   const [addConstOpenFlag, setAddConstOpenFlag] = useState(false);
   const [constraints, setConstraintsInList] = useState<Array<property>>([]);
+  const [constraintsExpanded, setConstraintsExpanded] = useState(false);
 
   const [addContextOpenFlag, setAddContextOpenFlag] = useState(false);
   const [contexts, setContextsInList] = useState<Array<property>>([]);
+  const [contextExpanded, setContextExpanded] = useState(false);
 
-  const addConstraint = (propName: property) => {
-    if (!constraints.includes(propName)) {
+  const prepareAndSend = (list: Array<property>, restraintType: string) => {
+    const result: any[] = [];
+    for (let i = 0; i < list.length; i++) {
+      switch (list[i].type) {
+        case 'quant':
+          if (list[i].value.max !== null && list[i].value.min !== null) {
+            result.push({
+              propKey: namesMap.get(list[i].name),
+              value: {
+                max: parseFloat(list[i].value.max),
+                min: parseFloat(list[i].value.min),
+              },
+            });
+          }
+          break;
+        case 'range':
+          if (list[i].value.max !== null && list[i].value.min !== null) {
+            for (let j = 0; j < list[i].value.max.length; j++) {
+              list[i].value.max[j] = parseFloat(list[i].value.max[j]);
+              list[i].value.min[j] = parseFloat(list[i].value.min[j]);
+            }
+            result.push({
+              propKey: namesMap.get(list[i].name),
+              value: {
+                max: list[i].value.max,
+                min: list[i].value.min,
+              },
+            });
+          }
+          break;
+        case 'list':
+        case 'qual':
+          if (list[i].value.val !== null) {
+            result.push({
+              propKey: namesMap.get(list[i].name),
+              value: {
+                val: (() => {
+                  if (isNaN(list[i].value.val)) {
+                    return list[i].value.val;
+                  } else {
+                    return parseFloat(list[i].value.val);
+                  }
+                })(),
+              },
+            });
+          }
+          break;
+      }
+    }
+    if (result.length > 0) {
+      if (restraintType === 'constraint') {
+        sendConstraintsSet({ value: result });
+      }
+      if (restraintType === 'context') {
+        sendContextSet({ value: result });
+      }
+    }
+  };
+
+  const updateConstraintValue = (propName: string, limit: string, value: number | string) => {
+    const tempConstraints: Array<property> = [];
+    for (let i = 0; i < constraints.length; i++) {
+      tempConstraints.push(constraints[i]);
+      if (constraints[i].name === propName) {
+        tempConstraints[i].value[limit] = value;
+      }
+    }
+    setConstraintsInList(tempConstraints);
+    prepareAndSend(contexts, 'context');
+    prepareAndSend(constraints, 'constraint');
+  };
+
+  const updateContextValue = (propName: string, limit: string, value: number | string) => {
+    const tempContext: Array<property> = [];
+    for (let i = 0; i < contexts.length; i++) {
+      tempContext.push(contexts[i]);
+      if (contexts[i].name === propName) {
+        tempContext[i].value[limit] = value;
+      }
+    }
+    setContextsInList(tempContext);
+    prepareAndSend(contexts, 'context');
+    prepareAndSend(constraints, 'constraint');
+  };
+
+  const addConstraint = (prop: property) => {
+    setConstraintsExpanded(true);
+    if (!constraints.includes(prop)) {
       const tempConstraints: Array<property> = [...constraints];
-      tempConstraints.unshift(propName);
+      tempConstraints.unshift(prop);
       setConstraintsInList(tempConstraints);
     }
   };
@@ -86,10 +184,11 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
     setConstraintsInList(tempConstraints);
   };
 
-  const addContext = (propName: property) => {
-    if (!contexts.includes(propName)) {
+  const addContext = (prop: property) => {
+    setContextExpanded(true);
+    if (!contexts.includes(prop)) {
       const tempContexts: Array<property> = [...contexts];
-      tempContexts.push(propName);
+      tempContexts.push(prop);
       setContextsInList(tempContexts);
     }
   };
@@ -176,11 +275,14 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
             borderRadius: 1,
           }}
         >
-          <Accordion key={`${Math.random()}`}>
+          <Accordion expanded={constraintsExpanded}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
               id='panel1a-header'
+              onClick={() => {
+                setConstraintsExpanded(!constraintsExpanded);
+              }}
             >
               <Typography>{`View Constraints (${constraints.length})`}</Typography>
             </AccordionSummary>
@@ -189,23 +291,28 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
                 {constraints?.map((constraint) => {
                   return (
                     <InputCard
-                      key={`${Math.random()}`}
+                      key={constraint.name}
                       propName={constraint.name}
                       propType={constraint.type}
                       units={constraint.unit}
                       options={constraint.options}
                       remover={removeConstraint}
+                      valueSetter={updateConstraintValue}
+                      currentValue={constraint.value}
                     />
                   );
                 })}
               </Box>
             </AccordionDetails>
           </Accordion>
-          <Accordion key={`${Math.random()}`}>
+          <Accordion expanded={contextExpanded}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls='panel1a-content'
               id='panel1a-header'
+              onClick={() => {
+                setContextExpanded(!contextExpanded);
+              }}
             >
               <Typography>{`View Context (${contexts.length})`}</Typography>
             </AccordionSummary>
@@ -214,12 +321,14 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
                 {contexts?.map((context) => {
                   return (
                     <InputCard
-                      key={`${Math.random()}`}
+                      key={context.name}
                       propName={context.name}
                       propType={context.type}
                       units={context.unit}
                       options={context.options}
                       remover={removeContext}
+                      valueSetter={updateContextValue}
+                      currentValue={context.value}
                     />
                   );
                 })}

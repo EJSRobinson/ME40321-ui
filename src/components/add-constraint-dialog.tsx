@@ -78,6 +78,7 @@ const addConstraintDialog: React.FC<SimpleDialogProps> = (props) => {
               >
                 {allProperties?.map((property) => {
                   if (group === property.group) {
+                    property.value = { max: null, min: null, val: null };
                     return (
                       <MenuItem key={`${Math.random()}`} value={property}>
                         {property.name}

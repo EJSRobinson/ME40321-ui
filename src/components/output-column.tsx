@@ -141,7 +141,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
       <Button
         variant='outlined'
         endIcon={<GetAppIcon />}
-        sx={{ fontSize: 12, p: 1, ml: 1, mt: 2, width: 284 }}
+        sx={{ fontSize: 12, p: 1, ml: 1, mt: 2, mb: 1, width: 284 }}
         onClick={() => {
           setExportOpenFlag(true);
         }}
