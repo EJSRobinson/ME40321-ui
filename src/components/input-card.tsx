@@ -20,7 +20,8 @@ const InputCard: React.FC<Props> = ({ propName, propType, units, options, remove
   return (
     <Box
       sx={{
-        bgcolor: 'background.paper',
+        border: 1,
+        borderColor: '#BBB',
         boxShadow: 1,
         borderRadius: 1,
         p: 1,

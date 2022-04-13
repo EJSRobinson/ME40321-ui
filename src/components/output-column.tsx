@@ -9,6 +9,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import Button from '@mui/material/Button';
+import AddExportDialog from './export-dialog';
+import { cadExporter } from '../cad-export';
 
 function reviver(key: any, value: any) {
   if (typeof value === 'object' && value !== null) {
@@ -44,6 +48,16 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   const [results, setResultsList] = useState<Array<any>>([]);
   const { data: rawResults, refetch } = useGetFinishedResultQuery(null);
   const [groups, setGroupsList] = useState<Array<any>>([]);
+  const [exportOpenFlag, setExportOpenFlag] = useState(false);
+
+  const groupTotals = new Map<string, number>();
+  results.forEach((result) => {
+    if (!groupTotals.has(result.group)) {
+      groupTotals.set(result.group, 1);
+    } else {
+      groupTotals.set(result.group, groupTotals.get(result.group) + 1);
+    }
+  });
 
   function populateGroup(results1: any[]) {
     const newGroups: any = [];
@@ -62,10 +76,12 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     }
   }, [finished]);
 
+  let mappedResults = new Map<string, any>();
+
   useEffect(() => {
     if (rawResults) {
       const newResults: any[] = [];
-      const mappedResults = JSON.parse(rawResults.data, reviver);
+      mappedResults = JSON.parse(rawResults.data, reviver);
       for (const [key, value] of mappedResults.entries()) {
         newResults.push(value);
       }
@@ -74,36 +90,69 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     }
   }, [rawResults]);
 
+  function handleExport(selection: string) {
+    switch (selection) {
+      case 'cad':
+        if (mappedResults.has('cr')) {
+          cadExporter(
+            mappedResults.get('cr'),
+            mappedResults.get('S'),
+            mappedResults.get('t'),
+            mappedResults.get('TEsw'),
+            mappedResults.get('LEsw')
+          );
+        }
+        break;
+    }
+  }
+
   return (
-    <Box sx={{ mr: 1 }}>
+    <Box boxShadow={1} sx={{ bgcolor: 'background.paper', borderRadius: 1, width: 308 }}>
       {groups?.map((group) => {
-        return (
-          <Accordion key={`${Math.random()}`}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'
-            >
-              <Typography>{group}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {results?.map((result) => {
-                if (result.group === group) {
-                  return (
-                    <OutputCard
-                      key={`${Math.random()}`}
-                      propName={result.name}
-                      propType={result.value.typeName}
-                      units={result.units.displayUnits}
-                      quantValue={result.value}
-                    />
-                  );
-                }
-              })}
-            </AccordionDetails>
-          </Accordion>
-        );
+        if (group !== 'Context') {
+          return (
+            <Accordion key={`${Math.random()}`}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls='panel1a-content'
+                id='panel1a-header'
+              >
+                <Typography>{`${group} (${groupTotals.get(group)})`}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {results?.map((result) => {
+                  if (result.group === group) {
+                    return (
+                      <OutputCard
+                        key={`${Math.random()}`}
+                        propName={result.name}
+                        propType={result.value.typeName}
+                        units={result.units.displayUnits}
+                        quantValue={result.value}
+                      />
+                    );
+                  }
+                })}
+              </AccordionDetails>
+            </Accordion>
+          );
+        }
       })}
+      <Button
+        variant='outlined'
+        endIcon={<GetAppIcon />}
+        sx={{ fontSize: 12, p: 1, ml: 1, mt: 2, width: 284 }}
+        onClick={() => {
+          setExportOpenFlag(true);
+        }}
+      >
+        Export
+      </Button>
+      <AddExportDialog
+        open={exportOpenFlag}
+        onClose={handleExport}
+        openFlagSetter={setExportOpenFlag}
+      />
     </Box>
   );
 };
