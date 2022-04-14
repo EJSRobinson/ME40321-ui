@@ -39,7 +39,7 @@ export type property = {
 let rawProperties: any = {};
 const allProperties: property[] = [];
 const allGroups: string[] = [];
-const namesMap = new Map<string, string>();
+const namesMap = new Map<string, any>();
 
 function sortProps() {
   for (const [key, value] of rawProperties.entries()) {
@@ -59,7 +59,7 @@ function sortProps() {
     if (!allGroups.includes(value.group)) {
       allGroups.push(value.group);
     }
-    namesMap.set(value.name, value.shortName);
+    namesMap.set(value.name, { shortName: value.shortName, mult: value.units.siMultiplier });
   }
 }
 (async () => {
@@ -68,6 +68,9 @@ function sortProps() {
 })();
 
 const inputColumn: React.FC<Props> = ({ setFinished }) => {
+  const { data: ready, refetch } = useCheckReadyToFinishQuery(null, {
+    pollingInterval: 3000,
+  });
   const [finish] = useFinishMutation();
   const [sendConstraintsSet] = useSetConstraintsMutation();
   const [sendContextSet] = useSetContextMutation();
@@ -83,29 +86,16 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
   const prepareAndSend = (list: Array<property>, restraintType: string) => {
     const result: any[] = [];
     for (let i = 0; i < list.length; i++) {
+      const mult = namesMap.get(list[i].name).mult;
       switch (list[i].type) {
         case 'quant':
-          if (list[i].value.max !== null && list[i].value.min !== null) {
-            result.push({
-              propKey: namesMap.get(list[i].name),
-              value: {
-                max: parseFloat(list[i].value.max),
-                min: parseFloat(list[i].value.min),
-              },
-            });
-          }
-          break;
         case 'range':
           if (list[i].value.max !== null && list[i].value.min !== null) {
-            for (let j = 0; j < list[i].value.max.length; j++) {
-              list[i].value.max[j] = parseFloat(list[i].value.max[j]);
-              list[i].value.min[j] = parseFloat(list[i].value.min[j]);
-            }
             result.push({
-              propKey: namesMap.get(list[i].name),
+              propKey: namesMap.get(list[i].name).shortName,
               value: {
-                max: list[i].value.max,
-                min: list[i].value.min,
+                max: parseFloat(list[i].value.max) / mult,
+                min: parseFloat(list[i].value.min) / mult,
               },
             });
           }
@@ -114,13 +104,13 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
         case 'qual':
           if (list[i].value.val !== null) {
             result.push({
-              propKey: namesMap.get(list[i].name),
+              propKey: namesMap.get(list[i].name).shortName,
               value: {
                 val: (() => {
                   if (isNaN(list[i].value.val)) {
                     return list[i].value.val;
                   } else {
-                    return parseFloat(list[i].value.val);
+                    return parseFloat(list[i].value.val) / mult;
                   }
                 })(),
               },
@@ -142,7 +132,7 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
   const updateConstraintValue = (propName: string, limit: string, value: number | string) => {
     const tempConstraints: Array<property> = [];
     for (let i = 0; i < constraints.length; i++) {
-      tempConstraints.push(constraints[i]);
+      tempConstraints.push(JSON.parse(JSON.stringify(constraints[i])));
       if (constraints[i].name === propName) {
         tempConstraints[i].value[limit] = value;
       }
@@ -155,7 +145,7 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
   const updateContextValue = (propName: string, limit: string, value: number | string) => {
     const tempContext: Array<property> = [];
     for (let i = 0; i < contexts.length; i++) {
-      tempContext.push(contexts[i]);
+      tempContext.push(JSON.parse(JSON.stringify(contexts[i])));
       if (contexts[i].name === propName) {
         tempContext[i].value[limit] = value;
       }
@@ -250,6 +240,13 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
       <Button
         variant='outlined'
         endIcon={<SendIcon />}
+        disabled={(() => {
+          if (ready === undefined) {
+            return false;
+          } else {
+            return !ready.data;
+          }
+        })()}
         sx={{ fontSize: 12, p: 1, ml: 0, mt: -1, width: 292 }}
         onClick={async () => {
           const result = (await finish(null)) as any;

@@ -7,15 +7,9 @@ import Box, { BoxProps } from '@mui/material/Box';
 import * as React from 'react';
 
 function App() {
-  // const { data: ready, refetch } = useCheckReadyToFinishQuery(null, {
-  //   pollingInterval: 3000,
-  // });
   const [finished, setFinishedFlag] = useState(false);
   function setFinished(result: boolean) {
     setFinishedFlag(result);
-    // setTimeout(() => {
-    //   setFinishedFlag(false);
-    // }, 5000);
   }
   return (
     <>

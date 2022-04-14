@@ -44,6 +44,9 @@ function cleanResults(results: any) {
 type Props = {
   finished: any;
 };
+
+let mappedResults = new Map<string, any>();
+
 const outputColumn: React.FC<Props> = ({ finished }) => {
   const [results, setResultsList] = useState<Array<any>>([]);
   const { data: rawResults, refetch } = useGetFinishedResultQuery(null);
@@ -76,8 +79,6 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     }
   }, [finished]);
 
-  let mappedResults = new Map<string, any>();
-
   useEffect(() => {
     if (rawResults) {
       const newResults: any[] = [];
@@ -95,11 +96,11 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
       case 'cad':
         if (mappedResults.has('cr')) {
           cadExporter(
-            mappedResults.get('cr'),
-            mappedResults.get('S'),
-            mappedResults.get('t'),
-            mappedResults.get('TEsw'),
-            mappedResults.get('LEsw')
+            mappedResults.get('cr').value.max,
+            mappedResults.get('S').value.max,
+            mappedResults.get('t').value.max,
+            mappedResults.get('TEsw').value.max,
+            mappedResults.get('LEsw').value.max
           );
         }
         break;

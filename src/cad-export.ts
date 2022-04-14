@@ -3,7 +3,19 @@ import * as exportSTL from 'ThreeJS-export-STL';
 import * as fs from 'fs';
 import { saveAs } from 'file-saver';
 
-export function cadExporter(cr: number, S: number, t: number, TEsw: number, LEsw: number) {
+export function cadExporter(
+  raw_cr: string,
+  raw_S: string,
+  raw_t: string,
+  raw_TEsw: string,
+  raw_LEsw: string
+) {
+  const cr = parseFloat(raw_cr) / 1000;
+  const S = parseFloat(raw_S) / 1000;
+  const t = parseFloat(raw_t) / 1000;
+  const TEsw = (parseFloat(raw_TEsw) * Math.PI) / 180;
+  const LEsw = (parseFloat(raw_LEsw) * Math.PI) / 180;
+
   const shape = new THREE.Shape();
   shape.moveTo(0, 0);
   shape.lineTo(0, cr);

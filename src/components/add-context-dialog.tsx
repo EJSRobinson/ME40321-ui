@@ -21,7 +21,7 @@ export interface SimpleDialogProps {
 }
 
 const AddContextDialog: React.FC<SimpleDialogProps> = (props) => {
-  const [prop, setProp] = useState<any>({});
+  const [prop, setProp] = useState<any>(null);
   const { onClose, open, openFlagSetter, allProperties } = props;
 
   const handleCancel = () => {
@@ -79,7 +79,7 @@ const AddContextDialog: React.FC<SimpleDialogProps> = (props) => {
           color='success'
           sx={{ width: 90, m: 2 }}
           onClick={() => handleConfirm()}
-          disabled={prop === ''}
+          disabled={prop === null}
           autoFocus
         >
           Confirm
