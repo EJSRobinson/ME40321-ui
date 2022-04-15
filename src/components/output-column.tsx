@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import OutputCard from './output-card';
-import { useGetFinishedResultQuery } from '../api-client';
+import { useGetFinishedResultQuery, useGetPlotQuery } from '../api-client';
 import React, { useEffect } from 'react';
 import { valueToPercent } from '@mui/base';
 import Accordion from '@mui/material/Accordion';
@@ -13,6 +13,13 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import Button from '@mui/material/Button';
 import AddExportDialog from './export-dialog';
 import { cadExporter } from '../cad-export';
+import { saveAs } from 'file-saver';
+
+function plotSaver(data: any, name: string) {
+  // const blob = new Blob([data], { type: 'image/png' });
+  const blob = new Blob([new Uint8Array(data, 0, data.length)]);
+  saveAs(blob, `plot_${name}.png`);
+}
 
 function reviver(key: any, value: any) {
   if (typeof value === 'object' && value !== null) {
@@ -52,6 +59,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   const { data: rawResults, refetch } = useGetFinishedResultQuery(null);
   const [groups, setGroupsList] = useState<Array<any>>([]);
   const [exportOpenFlag, setExportOpenFlag] = useState(false);
+  const { data: plot_Fn_V, refetch: fetchPlot_Fn_V } = useGetPlotQuery('Fn_V');
 
   const groupTotals = new Map<string, number>();
   results.forEach((result) => {
@@ -103,6 +111,12 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
             mappedResults.get('LEsw').value.max
           );
         }
+        break;
+      case 'Fn_V':
+        fetchPlot_Fn_V();
+        setTimeout(() => {
+          plotSaver(plot_Fn_V.raw.data, 'Fn_V');
+        }, 1000);
         break;
     }
   }

@@ -46,6 +46,13 @@ export const uiApiClient = createApi({
         body: body,
       }),
     }),
+    getPlot: builder.query<any, string>({
+      query: (body) => ({
+        url: 'export',
+        method: 'POST',
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -55,4 +62,5 @@ export const {
   useGetFinishedResultQuery,
   useSetConstraintsMutation,
   useSetContextMutation,
+  useGetPlotQuery,
 } = uiApiClient;

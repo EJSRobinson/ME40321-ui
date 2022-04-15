@@ -54,6 +54,9 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
               <MenuItem key={`${Math.random()}`} value='cad'>
                 CAD File (.stl)
               </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_V'>
+                Normal Force vs Velocity
+              </MenuItem>
             </Select>
           </FormControl>
         </Box>
