@@ -53,6 +53,13 @@ export const uiApiClient = createApi({
         body: body,
       }),
     }),
+    getPlotData: builder.query<any, string>({
+      query: (body) => ({
+        url: 'exportData',
+        method: 'POST',
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -63,4 +70,5 @@ export const {
   useSetConstraintsMutation,
   useSetContextMutation,
   useGetPlotQuery,
+  useGetPlotDataQuery,
 } = uiApiClient;

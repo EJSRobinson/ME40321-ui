@@ -48,14 +48,50 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
               defaultValue={''}
               onChange={(event) => setSelection(event.target.value)}
             >
-              <MenuItem key={`${Math.random()}`} value='Test'>
-                Test
-              </MenuItem>
               <MenuItem key={`${Math.random()}`} value='cad'>
                 CAD File (.stl)
               </MenuItem>
               <MenuItem key={`${Math.random()}`} value='Fn_V'>
-                Normal Force vs Velocity
+                Normal Force vs Velocity (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_M'>
+                Normal Force vs Mach Number (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_AoA'>
+                Normal Force vs Angle of Attack (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_S'>
+                Normal Force vs Span (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_BM'>
+                Bending Moment vs Span (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_Ang'>
+                Deflection Angle vs Span (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_Defl'>
+                Deflection vs Span (plot)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_V_data'>
+                Normal Force vs Velocity (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_M_data'>
+                Normal Force vs Mach Number (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_AoA_data'>
+                Normal Force vs Angle of Attack (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_S_data'>
+                Normal Force vs Span (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_BM_data'>
+                Bending Moment vs Span (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_Ang_data'>
+                Deflection Angle vs Span (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Fn_Defl_data'>
+                Deflection vs Span (.csv)
               </MenuItem>
             </Select>
           </FormControl>

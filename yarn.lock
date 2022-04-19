@@ -1462,6 +1462,11 @@
   "resolved" "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz"
   "version" "0.0.1"
 
+"convert-array-to-csv@^2.0.0":
+  "integrity" "sha512-dxUINCt28k6WbXGMoB+AaKjGY0Y6GkKwZmT+kvD4nJgVCOKsnIQ3G6n0v2II1lG4NwXQk6EWZ+pPDub9wcqqMg=="
+  "resolved" "https://registry.npmjs.org/convert-array-to-csv/-/convert-array-to-csv-2.0.0.tgz"
+  "version" "2.0.0"
+
 "convert-source-map@^1.5.0", "convert-source-map@^1.7.0":
   "integrity" "sha512-+OQdjP49zViI/6i7nIJpA8rAl4sV/JdPfU9nZs3VqOwGIgizICvuN2ru6fMd+4llL0tar18UYJXfZ/TWtmhUjA=="
   "resolved" "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.8.0.tgz"
