@@ -12,8 +12,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Provider } from 'react-redux';
-import { store } from '../store';
+// @ts-ignore
 import { getAll } from 'me40321-database';
 
 import {
@@ -244,6 +243,7 @@ const inputColumn: React.FC<Props> = ({ setFinished }) => {
           if (ready === undefined) {
             return false;
           } else {
+            // @ts-ignore
             return !ready.data;
           }
         })()}

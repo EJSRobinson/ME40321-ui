@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import AddExportDialog from './export-dialog';
 import { cadExporter } from '../cad-export';
 import { saveAs } from 'file-saver';
+// @ts-ignore
 import { convertArrayToCSV } from 'convert-array-to-csv';
 
 function plotSaver(data: any, name: string) {
@@ -70,8 +71,8 @@ let mappedResults = new Map<string, any>();
 
 const outputColumn: React.FC<Props> = ({ finished }) => {
   const [results, setResultsList] = useState<Array<any>>([]);
-  const { data: rawResults, refetch } = useGetFinishedResultQuery(null);
   const [groups, setGroupsList] = useState<Array<any>>([]);
+  const { data: rawResults, refetch: fetch_results } = useGetFinishedResultQuery(null);
   const [exportOpenFlag, setExportOpenFlag] = useState(false);
   const { data: plot_Fn_V, refetch: fetchPlot_Fn_V } = useGetPlotQuery('Fn_V');
   const { data: plot_Fn_M, refetch: fetchPlot_Fn_M } = useGetPlotQuery('Fn_M');
@@ -92,10 +93,21 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
 
   useEffect(() => {
     if (finished) {
+      fetch_results();
       fetchPlot_Fn_M();
       fetchPlot_Fn_V();
       fetchPlot_Fn_AoA();
       fetchPlot_Fn_S();
+      fetchPlot_BM_S();
+      fetchPlot_Ang_S();
+      fetchPlot_Defl_S();
+      fetchPlot_Fn_V_data();
+      fetchPlot_Fn_M_data();
+      fetchPlot_Fn_AoA_data();
+      fetchPlot_Fn_S_data();
+      fetchPlot_BM_S_data();
+      fetchPlot_Ang_S_data();
+      fetchPlot_Defl_S_data();
     }
   }, [finished]);
 
@@ -104,6 +116,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     if (!groupTotals.has(result.group)) {
       groupTotals.set(result.group, 1);
     } else {
+      // @ts-ignore: Object is possibly 'null'.
       groupTotals.set(result.group, groupTotals.get(result.group) + 1);
     }
   });
@@ -118,12 +131,6 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     }
     setGroupsList(newGroups);
   }
-
-  useEffect(() => {
-    if (finished) {
-      refetch();
-    }
-  }, [finished]);
 
   useEffect(() => {
     if (rawResults) {
@@ -152,87 +159,59 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
         break;
       case 'Fn_V':
         fetchPlot_Fn_V();
-        setTimeout(() => {
-          plotSaver(plot_Fn_V.raw.data, 'Fn_V');
-        }, 1000);
+        plotSaver(plot_Fn_V.raw.data, 'Fn_V');
         break;
       case 'Fn_M':
         fetchPlot_Fn_M();
-        setTimeout(() => {
-          plotSaver(plot_Fn_M.raw.data, 'Fn_M');
-        }, 1000);
+        plotSaver(plot_Fn_M.raw.data, 'Fn_M');
         break;
       case 'Fn_AoA':
         fetchPlot_Fn_AoA();
-        setTimeout(() => {
-          plotSaver(plot_Fn_AoA.raw.data, 'Fn_AoA');
-        }, 1000);
+        plotSaver(plot_Fn_AoA.raw.data, 'Fn_AoA');
         break;
       case 'Fn_S':
         fetchPlot_Fn_S();
-        setTimeout(() => {
-          plotSaver(plot_Fn_S.raw.data, 'Fn_S');
-        }, 1000);
+        plotSaver(plot_Fn_S.raw.data, 'Fn_S');
         break;
-      case 'Fn_BM':
+      case 'BM_S':
         fetchPlot_BM_S();
-        setTimeout(() => {
-          plotSaver(plot_BM_S.raw.data, 'BM_S');
-        }, 1000);
+        plotSaver(plot_BM_S.raw.data, 'BM_S');
         break;
-      case 'Fn_Ang':
+      case 'Ang_S':
         fetchPlot_Ang_S();
-        setTimeout(() => {
-          plotSaver(plot_Ang_S.raw.data, 'Ang_S');
-        }, 1000);
+        plotSaver(plot_Ang_S.raw.data, 'Ang_S');
         break;
-      case 'Fn_Defl':
+      case 'Defl_S':
         fetchPlot_Defl_S();
-        setTimeout(() => {
-          plotSaver(plot_Defl_S.raw.data, 'Defl_S');
-        }, 1000);
+        plotSaver(plot_Defl_S.raw.data, 'Defl_S');
         break;
       case 'Fn_V_data':
         fetchPlot_Fn_V_data();
-        setTimeout(() => {
-          csvSaver(plot_Fn_V_data.raw.val, 'Fn_V_data');
-        }, 1000);
+        csvSaver(plot_Fn_V_data.raw.val, 'Fn_V_data');
         break;
       case 'Fn_M_data':
         fetchPlot_Fn_M_data();
-        setTimeout(() => {
-          csvSaver(plot_Fn_M_data.raw.val, 'Fn_M_data');
-        }, 1000);
+        csvSaver(plot_Fn_M_data.raw.val, 'Fn_M_data');
         break;
       case 'Fn_AoA_data':
         fetchPlot_Fn_AoA_data();
-        setTimeout(() => {
-          csvSaver(plot_Fn_AoA_data.raw.val, 'Fn_AoA_data');
-        }, 1000);
+        csvSaver(plot_Fn_AoA_data.raw.val, 'Fn_AoA_data');
         break;
       case 'Fn_S_data':
         fetchPlot_Fn_S_data();
-        setTimeout(() => {
-          csvSaver(plot_Fn_S_data.raw.val, 'Fn_S_data');
-        }, 1000);
+        csvSaver(plot_Fn_S_data.raw.val, 'Fn_S_data');
         break;
-      case 'Fn_BM_data':
+      case 'BM_S_data':
         fetchPlot_BM_S_data();
-        setTimeout(() => {
-          csvSaver(plot_BM_S_data.raw.val, 'BM_S_data');
-        }, 1000);
+        csvSaver(plot_BM_S_data.raw.val, 'BM_S_data');
         break;
-      case 'Fn_Ang_data':
+      case 'Ang_S_data':
         fetchPlot_Ang_S_data();
-        setTimeout(() => {
-          csvSaver(plot_Ang_S_data.raw.val, 'Ang_S_data');
-        }, 1000);
+        csvSaver(plot_Ang_S_data.raw.val, 'Ang_S_data');
         break;
-      case 'Fn_Defl_data':
+      case 'Defl_S_data':
         fetchPlot_Defl_S_data();
-        setTimeout(() => {
-          csvSaver(plot_Defl_S_data.raw.val, 'Defl_S_data');
-        }, 1000);
+        csvSaver(plot_Defl_S_data.raw.val, 'Defl_S_data');
         break;
     }
   }

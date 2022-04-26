@@ -101,6 +101,7 @@ const InputCard: React.FC<Props> = ({
               label='Choose Option'
               value={currentValue.val}
               onChange={(e) => {
+                // @ts-ignore
                 valueSetter(propName, 'val', e.target.value);
               }}
             >

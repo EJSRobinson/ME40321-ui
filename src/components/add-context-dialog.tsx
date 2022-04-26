@@ -49,12 +49,13 @@ const AddContextDialog: React.FC<SimpleDialogProps> = (props) => {
               defaultValue={''}
               onChange={(event) => setProp(event.target.value)}
             >
-              {allProperties?.map((property) => {
-                if (property.group === 'Context') {
-                  property.value = { max: null, min: null, val: null };
+              {allProperties?.map((property1) => {
+                if (property1.group === 'Context') {
+                  property1.value = { max: null, min: null, val: null };
                   return (
-                    <MenuItem key={`${Math.random()}`} value={property}>
-                      {property.name}
+                    // @ts-ignore
+                    <MenuItem key={`${Math.random()}`} value={property1}>
+                      {property1.name}
                     </MenuItem>
                   );
                 }
