@@ -22,11 +22,14 @@ function plotSaver(data: any, name: string) {
   saveAs(blob, `plot_${name}.png`);
 }
 
-function csvSaver(data: any, name: string) {
+function csvSaver(data: any, name: string, header: string[]) {
   const rows: any[] = [];
-  const header: any[] = ['Span', name];
   for (let i = 0; i < data[0].length; i++) {
-    rows.push([data[0][i], data[1][i]]);
+    const currentRow: any[] = [];
+    for (let j = 0; j < data.length; j++) {
+      currentRow.push(data[j][i]);
+    }
+    rows.push(currentRow);
   }
   const csvFromArrayOfArrays = convertArrayToCSV(rows, {
     header,
@@ -91,23 +94,19 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     useGetPlotDataQuery('Ang_S_data');
   const { data: plot_Defl_S_data, refetch: fetchPlot_Defl_S_data } = useGetPlotQuery('Defl_S_data');
 
+  function fetchExportData() {
+    fetchPlot_Fn_V_data();
+    fetchPlot_Fn_M_data();
+    fetchPlot_Fn_AoA_data();
+    fetchPlot_Fn_S_data();
+    fetchPlot_BM_S_data();
+    fetchPlot_Ang_S_data();
+    fetchPlot_Defl_S_data();
+  }
   useEffect(() => {
     if (finished) {
       fetch_results();
-      fetchPlot_Fn_M();
-      fetchPlot_Fn_V();
-      fetchPlot_Fn_AoA();
-      fetchPlot_Fn_S();
-      fetchPlot_BM_S();
-      fetchPlot_Ang_S();
-      fetchPlot_Defl_S();
-      fetchPlot_Fn_V_data();
-      fetchPlot_Fn_M_data();
-      fetchPlot_Fn_AoA_data();
-      fetchPlot_Fn_S_data();
-      fetchPlot_BM_S_data();
-      fetchPlot_Ang_S_data();
-      fetchPlot_Defl_S_data();
+      fetchExportData();
     }
   }, [finished]);
 
@@ -145,6 +144,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   }, [rawResults]);
 
   function handleExport(selection: string) {
+    let header: string[] = [];
     switch (selection) {
       case 'cad':
         if (mappedResults.has('cr')) {
@@ -159,59 +159,73 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
         break;
       case 'Fn_V':
         fetchPlot_Fn_V();
-        plotSaver(plot_Fn_V.raw.data, 'Fn_V');
+        setTimeout(() => {
+          plotSaver(plot_Fn_V.raw.data, 'Fn_V');
+        }, 3000);
         break;
       case 'Fn_M':
         fetchPlot_Fn_M();
-        plotSaver(plot_Fn_M.raw.data, 'Fn_M');
+        setTimeout(() => {
+          plotSaver(plot_Fn_M.raw.data, 'Fn_M');
+        }, 3000);
         break;
       case 'Fn_AoA':
         fetchPlot_Fn_AoA();
-        plotSaver(plot_Fn_AoA.raw.data, 'Fn_AoA');
+        setTimeout(() => {
+          plotSaver(plot_Fn_AoA.raw.data, 'Fn_AoA');
+        }, 3000);
         break;
       case 'Fn_S':
         fetchPlot_Fn_S();
-        plotSaver(plot_Fn_S.raw.data, 'Fn_S');
+        setTimeout(() => {
+          plotSaver(plot_Fn_S.raw.data, 'Fn_S');
+        }, 3000);
         break;
       case 'BM_S':
         fetchPlot_BM_S();
-        plotSaver(plot_BM_S.raw.data, 'BM_S');
+        setTimeout(() => {
+          plotSaver(plot_BM_S.raw.data, 'BM_S');
+        }, 3000);
         break;
       case 'Ang_S':
         fetchPlot_Ang_S();
-        plotSaver(plot_Ang_S.raw.data, 'Ang_S');
+        setTimeout(() => {
+          plotSaver(plot_Ang_S.raw.data, 'Ang_S');
+        }, 3000);
         break;
       case 'Defl_S':
         fetchPlot_Defl_S();
-        plotSaver(plot_Defl_S.raw.data, 'Defl_S');
+        setTimeout(() => {
+          plotSaver(plot_Defl_S.raw.data, 'Defl_S');
+        }, 3000);
         break;
       case 'Fn_V_data':
-        fetchPlot_Fn_V_data();
-        csvSaver(plot_Fn_V_data.raw.val, 'Fn_V_data');
+        header = ['Velocity (m/s)', 'Normal Force @SL (N)', 'Normal Force @Alt (N)'];
+        csvSaver(plot_Fn_V_data.data, 'Fn_V_data', header);
         break;
       case 'Fn_M_data':
-        fetchPlot_Fn_M_data();
-        csvSaver(plot_Fn_M_data.raw.val, 'Fn_M_data');
+        header = ['Mach No.', 'Normal Force @SL (N)', 'Normal Force @Alt (N)'];
+        csvSaver(plot_Fn_M_data.data, 'Fn_M_data', header);
         break;
       case 'Fn_AoA_data':
-        fetchPlot_Fn_AoA_data();
-        csvSaver(plot_Fn_AoA_data.raw.val, 'Fn_AoA_data');
+        header = ['AoA ()', 'Normal Force @SL (N)', 'Normal Force @Alt (N)'];
+        csvSaver(plot_Fn_AoA_data.data, 'Fn_AoA_data', header);
         break;
       case 'Fn_S_data':
-        fetchPlot_Fn_S_data();
-        csvSaver(plot_Fn_S_data.raw.val, 'Fn_S_data');
+        header = ['Span (m)', 'Normal Force (N)'];
+        csvSaver(plot_Fn_S_data.data, 'Fn_S_data', header);
         break;
       case 'BM_S_data':
-        fetchPlot_BM_S_data();
-        csvSaver(plot_BM_S_data.raw.val, 'BM_S_data');
+        header = ['Span (m)', 'Bending Moment (Nm)'];
+        csvSaver(plot_BM_S_data.data, 'BM_S_data', header);
         break;
       case 'Ang_S_data':
-        fetchPlot_Ang_S_data();
-        csvSaver(plot_Ang_S_data.raw.val, 'Ang_S_data');
+        header = ['Span (m)', 'Deflection Anlge (m)'];
+        csvSaver(plot_Ang_S_data.data, 'Ang_S_data', header);
         break;
       case 'Defl_S_data':
-        fetchPlot_Defl_S_data();
-        csvSaver(plot_Defl_S_data.raw.val, 'Defl_S_data');
+        header = ['Span (m)', 'Deflection (m)'];
+        csvSaver(plot_Defl_S_data.data, 'Defl_S_data', header);
         break;
     }
   }
@@ -253,6 +267,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
         endIcon={<GetAppIcon />}
         sx={{ fontSize: 12, p: 1, ml: 1, mt: 2, mb: 1, width: 284 }}
         onClick={() => {
+          fetchExportData();
           setExportOpenFlag(true);
         }}
       >

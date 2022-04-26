@@ -63,13 +63,13 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
               <MenuItem key={`${Math.random()}`} value='Fn_S'>
                 Normal Force vs Span (plot)
               </MenuItem>
-              <MenuItem key={`${Math.random()}`} value='Fn_BM'>
+              <MenuItem key={`${Math.random()}`} value='BM_S'>
                 Bending Moment vs Span (plot)
               </MenuItem>
-              <MenuItem key={`${Math.random()}`} value='Fn_Ang'>
+              <MenuItem key={`${Math.random()}`} value='Ang_S'>
                 Deflection Angle vs Span (plot)
               </MenuItem>
-              <MenuItem key={`${Math.random()}`} value='Fn_Defl'>
+              <MenuItem key={`${Math.random()}`} value='Defl_S'>
                 Deflection vs Span (plot)
               </MenuItem>
               <MenuItem key={`${Math.random()}`} value='Fn_V_data'>
@@ -84,13 +84,13 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
               <MenuItem key={`${Math.random()}`} value='Fn_S_data'>
                 Normal Force vs Span (.csv)
               </MenuItem>
-              <MenuItem key={`${Math.random()}`} value='Fn_BM_data'>
+              <MenuItem key={`${Math.random()}`} value='BM_S_data'>
                 Bending Moment vs Span (.csv)
               </MenuItem>
-              <MenuItem key={`${Math.random()}`} value='Fn_Ang_data'>
+              <MenuItem key={`${Math.random()}`} value='Ang_S_data'>
                 Deflection Angle vs Span (.csv)
               </MenuItem>
-              <MenuItem key={`${Math.random()}`} value='Fn_Defl_data'>
+              <MenuItem key={`${Math.random()}`} value='Defl_S_data'>
                 Deflection vs Span (.csv)
               </MenuItem>
             </Select>
