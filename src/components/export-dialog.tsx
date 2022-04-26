@@ -72,6 +72,9 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
               <MenuItem key={`${Math.random()}`} value='Defl_S'>
                 Deflection vs Span (plot)
               </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Stress_S'>
+                Stress vs Span (plot)
+              </MenuItem>
               <MenuItem key={`${Math.random()}`} value='Fn_V_data'>
                 Normal Force vs Velocity (.csv)
               </MenuItem>
@@ -92,6 +95,9 @@ const AddExportDialog: React.FC<SimpleDialogProps> = (props) => {
               </MenuItem>
               <MenuItem key={`${Math.random()}`} value='Defl_S_data'>
                 Deflection vs Span (.csv)
+              </MenuItem>
+              <MenuItem key={`${Math.random()}`} value='Stress_S_data'>
+                Stress vs Span (.csv)
               </MenuItem>
             </Select>
           </FormControl>

@@ -77,6 +77,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   const [groups, setGroupsList] = useState<Array<any>>([]);
   const { data: rawResults, refetch: fetch_results } = useGetFinishedResultQuery(null);
   const [exportOpenFlag, setExportOpenFlag] = useState(false);
+  // PLOTS
   const { data: plot_Fn_V, refetch: fetchPlot_Fn_V } = useGetPlotQuery('Fn_V');
   const { data: plot_Fn_M, refetch: fetchPlot_Fn_M } = useGetPlotQuery('Fn_M');
   const { data: plot_Fn_AoA, refetch: fetchPlot_Fn_AoA } = useGetPlotQuery('Fn_AoA');
@@ -84,6 +85,8 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   const { data: plot_BM_S, refetch: fetchPlot_BM_S } = useGetPlotQuery('BM_S');
   const { data: plot_Ang_S, refetch: fetchPlot_Ang_S } = useGetPlotQuery('Ang_S');
   const { data: plot_Defl_S, refetch: fetchPlot_Defl_S } = useGetPlotQuery('Defl_S');
+  const { data: plot_Stress_S, refetch: fetchPlot_Stress_S } = useGetPlotQuery('Stress_S');
+  // CSVS
   const { data: plot_Fn_V_data, refetch: fetchPlot_Fn_V_data } = useGetPlotDataQuery('Fn_V_data');
   const { data: plot_Fn_M_data, refetch: fetchPlot_Fn_M_data } = useGetPlotDataQuery('Fn_M_data');
   const { data: plot_Fn_AoA_data, refetch: fetchPlot_Fn_AoA_data } =
@@ -93,6 +96,8 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   const { data: plot_Ang_S_data, refetch: fetchPlot_Ang_S_data } =
     useGetPlotDataQuery('Ang_S_data');
   const { data: plot_Defl_S_data, refetch: fetchPlot_Defl_S_data } = useGetPlotQuery('Defl_S_data');
+  const { data: plot_Stress_S_data, refetch: fetchPlot_Stress_S_data } =
+    useGetPlotQuery('Stress_S_data');
 
   function fetchExportData() {
     fetchPlot_Fn_V_data();
@@ -102,6 +107,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
     fetchPlot_BM_S_data();
     fetchPlot_Ang_S_data();
     fetchPlot_Defl_S_data();
+    fetchPlot_Stress_S_data();
   }
   useEffect(() => {
     if (finished) {
@@ -199,33 +205,43 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
           plotSaver(plot_Defl_S.raw.data, 'Defl_S');
         }, 3000);
         break;
+      case 'Stress_S':
+        fetchPlot_Stress_S();
+        setTimeout(() => {
+          plotSaver(plot_Stress_S.raw.data, 'Stress_S');
+        }, 3000);
+        break;
       case 'Fn_V_data':
         header = ['Velocity (m/s)', 'Normal Force @SL (N)', 'Normal Force @Alt (N)'];
-        csvSaver(plot_Fn_V_data.data, 'Fn_V_data', header);
+        csvSaver(plot_Fn_V_data.raw.val, 'Fn_V_data', header);
         break;
       case 'Fn_M_data':
         header = ['Mach No.', 'Normal Force @SL (N)', 'Normal Force @Alt (N)'];
-        csvSaver(plot_Fn_M_data.data, 'Fn_M_data', header);
+        csvSaver(plot_Fn_M_data.raw.val, 'Fn_M_data', header);
         break;
       case 'Fn_AoA_data':
         header = ['AoA ()', 'Normal Force @SL (N)', 'Normal Force @Alt (N)'];
-        csvSaver(plot_Fn_AoA_data.data, 'Fn_AoA_data', header);
+        csvSaver(plot_Fn_AoA_data.raw.val, 'Fn_AoA_data', header);
         break;
       case 'Fn_S_data':
         header = ['Span (m)', 'Normal Force (N)'];
-        csvSaver(plot_Fn_S_data.data, 'Fn_S_data', header);
+        csvSaver(plot_Fn_S_data.raw.val, 'Fn_S_data', header);
         break;
       case 'BM_S_data':
         header = ['Span (m)', 'Bending Moment (Nm)'];
-        csvSaver(plot_BM_S_data.data, 'BM_S_data', header);
+        csvSaver(plot_BM_S_data.raw.val, 'BM_S_data', header);
         break;
       case 'Ang_S_data':
         header = ['Span (m)', 'Deflection Anlge (m)'];
-        csvSaver(plot_Ang_S_data.data, 'Ang_S_data', header);
+        csvSaver(plot_Ang_S_data.raw.val, 'Ang_S_data', header);
         break;
       case 'Defl_S_data':
         header = ['Span (m)', 'Deflection (m)'];
-        csvSaver(plot_Defl_S_data.data, 'Defl_S_data', header);
+        csvSaver(plot_Defl_S_data.raw.val, 'Defl_S_data', header);
+        break;
+      case 'Stress_S_data':
+        header = ['Span (m)', 'Stress (Pa)'];
+        csvSaver(plot_Stress_S_data.raw.val, 'Stress_S_data', header);
         break;
     }
   }
