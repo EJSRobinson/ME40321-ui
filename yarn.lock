@@ -2368,10 +2368,10 @@
   dependencies:
     "yallist" "^4.0.0"
 
-"me40321-database@^0.0.30":
-  "integrity" "sha512-D6N2OMcthvsrjrTKq7euFCqqNnreh0HslMBe4hKJpA0jhIlnQ+vh2hQU3PVAbzpe//1B5kuz5hvqYPA6arI69A=="
-  "resolved" "https://registry.npmjs.org/me40321-database/-/me40321-database-0.0.30.tgz"
-  "version" "0.0.30"
+"me40321-database@^0.0.32":
+  "integrity" "sha512-SDbG7Zz29CIt7UTZ9OpTkOYbX9dCRnjxYaiy25FhSEg6jqzr0WQWrT8KuKG5iXSg92OANi10jo7PyxV/SY2CoA=="
+  "resolved" "https://registry.npmjs.org/me40321-database/-/me40321-database-0.0.32.tgz"
+  "version" "0.0.32"
 
 "minimatch@^3.0.4":
   "integrity" "sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw=="

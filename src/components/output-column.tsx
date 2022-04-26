@@ -22,12 +22,14 @@ function plotSaver(data: any, name: string) {
 }
 
 function csvSaver(data: any, name: string) {
-  console.log(data);
   const rows: any[] = [];
-  const header: any[] = [];
+  const header: any[] = ['Span', name];
+  for (let i = 0; i < data[0].length; i++) {
+    rows.push([data[0][i], data[1][i]]);
+  }
   const csvFromArrayOfArrays = convertArrayToCSV(rows, {
     header,
-    separator: ';',
+    separator: ',',
   });
   const blob = new Blob([csvFromArrayOfArrays], { type: 'text/csv;charset=utf-8;' });
   saveAs(blob, `data_${name}.csv`);
@@ -75,20 +77,18 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
   const { data: plot_Fn_M, refetch: fetchPlot_Fn_M } = useGetPlotQuery('Fn_M');
   const { data: plot_Fn_AoA, refetch: fetchPlot_Fn_AoA } = useGetPlotQuery('Fn_AoA');
   const { data: plot_Fn_S, refetch: fetchPlot_Fn_S } = useGetPlotQuery('Fn_S');
-  const { data: plot_Fn_BM, refetch: fetchPlot_Fn_BM } = useGetPlotQuery('Fn_BM');
-  const { data: plot_Fn_Ang, refetch: fetchPlot_Fn_Ang } = useGetPlotQuery('Fn_Ang');
-  const { data: plot_Fn_Defl, refetch: fetchPlot_Fn_Defl } = useGetPlotQuery('Fn_Defl');
+  const { data: plot_BM_S, refetch: fetchPlot_BM_S } = useGetPlotQuery('BM_S');
+  const { data: plot_Ang_S, refetch: fetchPlot_Ang_S } = useGetPlotQuery('Ang_S');
+  const { data: plot_Defl_S, refetch: fetchPlot_Defl_S } = useGetPlotQuery('Defl_S');
   const { data: plot_Fn_V_data, refetch: fetchPlot_Fn_V_data } = useGetPlotDataQuery('Fn_V_data');
   const { data: plot_Fn_M_data, refetch: fetchPlot_Fn_M_data } = useGetPlotDataQuery('Fn_M_data');
   const { data: plot_Fn_AoA_data, refetch: fetchPlot_Fn_AoA_data } =
     useGetPlotDataQuery('Fn_AoA_data');
   const { data: plot_Fn_S_data, refetch: fetchPlot_Fn_S_data } = useGetPlotDataQuery('Fn_S_data');
-  const { data: plot_Fn_BM_data, refetch: fetchPlot_Fn_BM_data } =
-    useGetPlotDataQuery('Fn_BM_data');
-  const { data: plot_Fn_Ang_data, refetch: fetchPlot_Fn_Ang_data } =
-    useGetPlotDataQuery('Fn_Ang_data');
-  const { data: plot_Fn_Defl_data, refetch: fetchPlot_Fn_Defl_data } =
-    useGetPlotQuery('Fn_Defl_data');
+  const { data: plot_BM_S_data, refetch: fetchPlot_BM_S_data } = useGetPlotDataQuery('BM_S_data');
+  const { data: plot_Ang_S_data, refetch: fetchPlot_Ang_S_data } =
+    useGetPlotDataQuery('Ang_S_data');
+  const { data: plot_Defl_S_data, refetch: fetchPlot_Defl_S_data } = useGetPlotQuery('Defl_S_data');
 
   useEffect(() => {
     if (finished) {
@@ -175,21 +175,21 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
         }, 1000);
         break;
       case 'Fn_BM':
-        fetchPlot_Fn_BM();
+        fetchPlot_BM_S();
         setTimeout(() => {
-          plotSaver(plot_Fn_BM.raw.data, 'Fn_BM');
+          plotSaver(plot_BM_S.raw.data, 'BM_S');
         }, 1000);
         break;
       case 'Fn_Ang':
-        fetchPlot_Fn_Ang();
+        fetchPlot_Ang_S();
         setTimeout(() => {
-          plotSaver(plot_Fn_Ang.raw.data, 'Fn_Ang');
+          plotSaver(plot_Ang_S.raw.data, 'Ang_S');
         }, 1000);
         break;
       case 'Fn_Defl':
-        fetchPlot_Fn_Defl();
+        fetchPlot_Defl_S();
         setTimeout(() => {
-          plotSaver(plot_Fn_Defl.raw.data, 'Fn_Defl');
+          plotSaver(plot_Defl_S.raw.data, 'Defl_S');
         }, 1000);
         break;
       case 'Fn_V_data':
@@ -217,21 +217,21 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
         }, 1000);
         break;
       case 'Fn_BM_data':
-        fetchPlot_Fn_BM_data();
+        fetchPlot_BM_S_data();
         setTimeout(() => {
-          csvSaver(plot_Fn_BM_data.raw.val, 'Fn_BM_data');
+          csvSaver(plot_BM_S_data.raw.val, 'BM_S_data');
         }, 1000);
         break;
       case 'Fn_Ang_data':
-        fetchPlot_Fn_Ang_data();
+        fetchPlot_Ang_S_data();
         setTimeout(() => {
-          csvSaver(plot_Fn_Ang_data.raw.val, 'Fn_Ang_data');
+          csvSaver(plot_Ang_S_data.raw.val, 'Ang_S_data');
         }, 1000);
         break;
       case 'Fn_Defl_data':
-        fetchPlot_Fn_Defl_data();
+        fetchPlot_Defl_S_data();
         setTimeout(() => {
-          csvSaver(plot_Fn_Defl_data.raw.val, 'Fn_Defl_data');
+          csvSaver(plot_Defl_S_data.raw.val, 'Defl_S_data');
         }, 1000);
         break;
     }
