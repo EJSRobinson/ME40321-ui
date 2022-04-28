@@ -286,6 +286,7 @@ const outputColumn: React.FC<Props> = ({ finished }) => {
           fetchExportData();
           setExportOpenFlag(true);
         }}
+        disabled={!finished}
       >
         Export
       </Button>

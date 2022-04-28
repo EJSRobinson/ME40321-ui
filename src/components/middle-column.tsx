@@ -93,17 +93,25 @@ const Fin: React.FC<Props> = ({ finished }) => {
 };
 
 const middleColumn: React.FC<Props> = ({ finished }) => {
-  return (
-    <Canvas>
-      <CameraController />
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <pointLight position={[-10, -10, -10]} />
-      <Provider store={store}>
-        <Fin finished={finished} />
-      </Provider>
-    </Canvas>
-  );
+  if (finished) {
+    return (
+      <Canvas>
+        <CameraController />
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+        <pointLight position={[-10, -10, -10]} />
+        <Provider store={store}>
+          <Fin finished={finished} />
+        </Provider>
+      </Canvas>
+    );
+  } else {
+    return (
+      <Box sx={{ fontSize: 30, mt: 50, width: '100%', textAlign: 'center' }}>
+        No active design to display
+      </Box>
+    );
+  }
 };
 
 export default middleColumn;
